@@ -11,6 +11,8 @@ services:
       - database
       - redis
     command: bash -c "sleep 10 && rails db:migrate && rails s -b 0.0.0.0"
+    volumes:
+      - chatsystemapp:/home/app
     environment:
       - REDIS_URL=redis://cache
       - ELASTICSEARCH_URL=http://elasticsearch:9200
@@ -41,6 +43,8 @@ services:
 
   sidekiq:
     build: .
+    volumes:
+      - chatsystemapp:/home/app
     links:
       - database
       - redis
@@ -50,4 +54,6 @@ services:
 
 volumes:
   esdata:
+    driver: local
+  chatsystemapp:
     driver: local
