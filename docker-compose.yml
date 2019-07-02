@@ -8,8 +8,12 @@ services:
     ports:
     - "3000:3000"
     links:
-    - database
-    command: "rails db:migrate && rails s -b 0.0.0.0"
+      - database
+      - redis
+    command: bash -c "sleep 10 && rails db:migrate && rails s -b 0.0.0.0"
+    environment:
+      - REDIS_URL=redis://cache
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
 
   database:
     image: mysql:5.7
@@ -18,3 +22,32 @@ services:
       - MYSQL_DATABASE=chat_system
     ports:
     - "3307:3306"
+
+  redis:
+    image: redis
+    container_name: cache
+    expose:
+      - 6379
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+  sidekiq:
+    build: .
+    links:
+      - database
+      - redis
+    command: bundle exec sidekiq
+    environment:
+      - REDIS_URL=redis://cache
+
+volumes:
+  esdata:
+    driver: local
