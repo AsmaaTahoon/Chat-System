@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  rails:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - "3000:3000"
+    links:
+    - database
+    command: "rails db:migrate && rails s -b 0.0.0.0"
+
+  database:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=chat_system
+    ports:
+    - "3307:3306"
