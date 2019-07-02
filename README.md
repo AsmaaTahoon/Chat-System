@@ -11,5 +11,5 @@ simple chat system which has an API endpoints
 3. create chat endpoint POST ``/chats`` with body ``{"application_token": "APPLICATION_TOKEN"}``
 4. create message endpoint POST ``/messages`` with body ``{"chat_number": "CHAT_NUMBER", ""application_token": "APPLICATION_TOKEN", "body": "MESSAGE_BODY"}``
 5. get application chats GET ``/applications/{APPLICATION_TOKEN}/chats``
-6. get application chat messages chats GET ``/applications/{APPLICATION_TOKEN}/chats/{CHAT_NUMBER}``
-5. search message body chats POST ``/messages/search`` with body ``{"chat_number": "CHAT_NUMBER", ""application_token": "APPLICATION_TOKEN"}``
+6. get application chat messages GET ``/applications/{APPLICATION_TOKEN}/chats/{CHAT_NUMBER}``
+5. search in message body POST ``/messages/search`` with body ``{"chat_number": "CHAT_NUMBER", ""application_token": "APPLICATION_TOKEN"}``
